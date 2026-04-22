@@ -5,6 +5,7 @@ import com.survey.entity.*;
 import com.survey.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
@@ -22,9 +23,16 @@ public class StatisticsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public StatisticsDTO getSurveyStatistics(Long surveyId, String username) {
-        Survey survey = surveyRepository.findByIdWithQuestionsAndOptions(surveyId)
+        Survey survey = surveyRepository.findByIdWithQuestions(surveyId)
                 .orElseThrow(() -> new RuntimeException("Survey not found"));
+
+        if (survey.getQuestions() != null) {
+            for (Question question : survey.getQuestions()) {
+                question.getOptions().size();
+            }
+        }
 
         if (username != null && !username.isEmpty()) {
             User user = userRepository.findByUsername(username).orElse(null);

@@ -43,7 +43,7 @@ import { QuestionRequest, OptionRequest, SurveyRequest } from '../../models/surv
 
         <div class="form-group">
           <label class="form-label">问卷类型</label>
-          <div class="d-flex gap-4" style="margin-top: 8px;">
+          <div class="d-flex gap-4 flex-wrap" style="margin-top: 8px;">
             <label class="d-flex align-items-center" style="cursor: pointer;">
               <input
                 type="radio"
@@ -140,7 +140,7 @@ import { QuestionRequest, OptionRequest, SurveyRequest } from '../../models/surv
                 <div *ngFor="let optionGroup of getOptions(questionGroup).controls; let j = index" 
                      class="d-flex align-items-center" style="margin-bottom: 8px;">
                   <span style="color: var(--text-secondary); margin-right: 12px; min-width: 30px;">
-                    {{ String.fromCharCode(65 + j) }}.
+                    {{ getOptionLetter(j) }}.
                   </span>
                   <input
                     type="text"
@@ -224,6 +224,10 @@ export class SurveyCreateComponent implements OnInit {
 
   getOptions(questionGroup: AbstractControl): FormArray {
     return questionGroup.get('options') as FormArray;
+  }
+
+  getOptionLetter(index: number): string {
+    return String.fromCharCode(65 + index);
   }
 
   ngOnInit(): void {
