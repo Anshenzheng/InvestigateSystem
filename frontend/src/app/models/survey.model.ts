@@ -39,6 +39,7 @@ export interface QuestionRequest {
   id?: number;
   questionText: string;
   questionType: 'SINGLE_CHOICE' | 'MULTIPLE_CHOICE';
+  orderIndex?: number;
   isRequired: boolean;
   options: OptionRequest[];
 }
@@ -46,4 +47,5 @@ export interface QuestionRequest {
 export interface OptionRequest {
   id?: number;
   optionText: string;
+  orderIndex?: number;
 }

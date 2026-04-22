@@ -129,15 +129,31 @@ public class SurveyService {
         return convertToDTO(savedSurvey);
     }
 
+    @Transactional(readOnly = true)
     public SurveyDTO getSurveyById(Long id) {
-        Survey survey = surveyRepository.findByIdWithQuestionsAndOptions(id)
+        Survey survey = surveyRepository.findByIdWithQuestions(id)
                 .orElseThrow(() -> new RuntimeException("Survey not found"));
+        
+        if (survey.getQuestions() != null) {
+            for (Question question : survey.getQuestions()) {
+                question.getOptions().size();
+            }
+        }
+        
         return convertToDTO(survey);
     }
 
+    @Transactional(readOnly = true)
     public SurveyDTO getPublishedSurveyById(Long id) {
-        Survey survey = surveyRepository.findByIdWithQuestionsAndOptionsPublished(id)
+        Survey survey = surveyRepository.findByIdWithQuestionsPublished(id)
                 .orElseThrow(() -> new RuntimeException("Survey not found or not published"));
+        
+        if (survey.getQuestions() != null) {
+            for (Question question : survey.getQuestions()) {
+                question.getOptions().size();
+            }
+        }
+        
         return convertToDTO(survey);
     }
 
