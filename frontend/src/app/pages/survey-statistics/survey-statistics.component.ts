@@ -4,7 +4,34 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { StatisticsService } from '../../core/services/statistics.service';
 import { SurveyStatistics, QuestionStatistics, OptionStatistics } from '../../models/statistics.model';
 import { NgChartsModule } from 'ng2-charts';
-import { ChartConfiguration, ChartType } from 'chart.js';
+
+type ChartType = 'pie' | 'bar' | 'line' | 'doughnut' | 'radar' | 'polarArea';
+
+interface ChartData {
+  labels: string[];
+  datasets: ChartDataset[];
+}
+
+interface ChartDataset {
+  data: number[];
+  backgroundColor?: string[];
+  borderWidth?: number;
+  borderColor?: string;
+}
+
+interface ChartOptions {
+  responsive?: boolean;
+  maintainAspectRatio?: boolean;
+  plugins?: {
+    legend?: {
+      position?: string;
+      labels?: {
+        padding?: number;
+        usePointStyle?: boolean;
+      };
+    };
+  };
+}
 
 @Component({
   selector: 'app-survey-statistics',
@@ -112,7 +139,7 @@ export class SurveyStatisticsComponent implements OnInit {
   surveyId: number | null = null;
 
   chartType: ChartType = 'pie';
-  chartOptions: ChartConfiguration['options'] = {
+  chartOptions: ChartOptions = {
     responsive: true,
     maintainAspectRatio: true,
     plugins: {
@@ -173,7 +200,7 @@ export class SurveyStatisticsComponent implements OnInit {
     this.router.navigate(['/surveys']);
   }
 
-  getChartData(question: QuestionStatistics): ChartConfiguration['data'] {
+  getChartData(question: QuestionStatistics): ChartData {
     const labels = question.options.map(o => o.optionText);
     const data = question.options.map(o => o.count);
 
