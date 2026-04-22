@@ -5,6 +5,7 @@ import com.survey.security.JwtRequestFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -22,18 +23,25 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtRequestFilter jwtRequestFilter;
+    private final UserDetailsService jwtUserDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserDetailsService jwtUserDetailsService;
+    public WebSecurityConfig(
+            JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
+            JwtRequestFilter jwtRequestFilter,
+            @Lazy UserDetailsService jwtUserDetailsService,
+            @Lazy PasswordEncoder passwordEncoder) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtRequestFilter = jwtRequestFilter;
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Bean
