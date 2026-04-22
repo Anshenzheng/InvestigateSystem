@@ -19,20 +19,6 @@ interface ChartDataset {
   borderColor?: string;
 }
 
-interface ChartOptions {
-  responsive?: boolean;
-  maintainAspectRatio?: boolean;
-  plugins?: {
-    legend?: {
-      position?: string;
-      labels?: {
-        padding?: number;
-        usePointStyle?: boolean;
-      };
-    };
-  };
-}
-
 @Component({
   selector: 'app-survey-statistics',
   standalone: true,
@@ -139,7 +125,7 @@ export class SurveyStatisticsComponent implements OnInit {
   surveyId: number | null = null;
 
   chartType: ChartType = 'pie';
-  chartOptions: ChartOptions = {
+  chartOptions: any = {
     responsive: true,
     maintainAspectRatio: true,
     plugins: {

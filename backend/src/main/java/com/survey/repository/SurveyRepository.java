@@ -15,11 +15,11 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
     List<Survey> findByIsPublishedTrue();
     Optional<Survey> findByIdAndIsPublishedTrue(Long id);
     
-    @Query("SELECT s FROM Survey s LEFT JOIN FETCH s.questions q LEFT JOIN FETCH q.options WHERE s.id = :id")
-    Optional<Survey> findByIdWithQuestionsAndOptions(@Param("id") Long id);
+    @Query("SELECT s FROM Survey s LEFT JOIN FETCH s.questions q WHERE s.id = :id")
+    Optional<Survey> findByIdWithQuestions(@Param("id") Long id);
     
-    @Query("SELECT s FROM Survey s LEFT JOIN FETCH s.questions q LEFT JOIN FETCH q.options WHERE s.id = :id AND s.isPublished = true")
-    Optional<Survey> findByIdWithQuestionsAndOptionsPublished(@Param("id") Long id);
+    @Query("SELECT s FROM Survey s LEFT JOIN FETCH s.questions q WHERE s.id = :id AND s.isPublished = true")
+    Optional<Survey> findByIdWithQuestionsPublished(@Param("id") Long id);
     
     List<Survey> findByCreatorOrderByCreatedAtDesc(User creator);
     List<Survey> findByIsPublishedTrueOrderByPublishedAtDesc();
