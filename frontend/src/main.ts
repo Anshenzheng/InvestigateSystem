@@ -7,7 +7,6 @@ import { authInterceptor } from './app/core/interceptors/auth.interceptor';
 import { importProvidersFrom } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgChartsModule } from 'ng2-charts';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -16,8 +15,7 @@ bootstrapApplication(AppComponent, {
     importProvidersFrom(
       ReactiveFormsModule,
       FormsModule,
-      BrowserAnimationsModule,
-      NgChartsModule
+      BrowserAnimationsModule
     )
   ]
 }).catch(err => console.error(err));
